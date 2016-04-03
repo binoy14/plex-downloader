@@ -1,12 +1,13 @@
 import express from 'express';
+import bodyParser from 'body-parser';
+import api from './Routing/api';
 
 let app = express();
 
-// const router = express.Router();
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
-// router.get('/', (req, res) => {
-// 	res.send('Hello');
-// });
+app.use('/api',api);
 
 app.use((req, res) => {
 	const HTML = `
@@ -18,6 +19,7 @@ app.use((req, res) => {
 			</head>
 			<body>
 				<div id="react-view"></div>
+				<script type="application/javascript" src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
 				<script type="application/javascript" src="/bundle.js"></script>
 			</body>
 		</html>

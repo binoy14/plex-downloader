@@ -6,6 +6,11 @@ var server = require('./server');
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, function() {
+var app = server.listen(PORT, function() {
 	console.log('Server listening on ', PORT);
+})
+
+var io = require('socket.io')(app);
+io.on('connection', (socket) => {
+	module.exports = socket;
 })
