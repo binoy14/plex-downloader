@@ -1,7 +1,7 @@
 'use strict';
 
 require('babel-register')({});
-
+var downloadTorrent = require('./controllers/downloadTorrent');
 var server = require('./server');
 
 const PORT = process.env.PORT || 3000;
@@ -12,5 +12,6 @@ var app = server.listen(PORT, function() {
 
 var io = require('socket.io')(app);
 io.on('connection', (socket) => {
-	module.exports = socket;
-})
+	console.log('connected');
+	downloadTorrent('https://webtorrent.io/torrents/sintel.torrent', socket);
+});

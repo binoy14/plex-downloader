@@ -6,13 +6,20 @@ class App extends React.Component {
 	constructor() {
 		super();
 		let socket = io();
-		socket.on('news', function(data) {
+		this.state = {
+			downloadPercent: null
+		}
+		var that = this;
+		socket.on('download', function(data) {
 			console.log(data);
-			socket.emit('my other event', {my: 'data'});
+			that.setState({
+				downloadPercent: data.completePercent
+			});
+			// socket.emit('my other event', {my: 'data'});
 		});
 	}
 	render() {
-		return <div>Hello World</div>;
+		return <div>Hello World {this.state.downloadPercent}</div>;
 	}
 }
 
