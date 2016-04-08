@@ -13,5 +13,8 @@ var app = server.listen(PORT, function() {
 var io = require('socket.io')(app);
 io.on('connection', (socket) => {
 	console.log('connected');
-	downloadTorrent('https://webtorrent.io/torrents/sintel.torrent', socket);
+	socket.on('sendInput', (data) => {
+		console.log(data);
+		downloadTorrent(data.inputVal, socket);
+	});
 });

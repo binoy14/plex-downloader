@@ -1,25 +1,48 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import socket from 'socket.io-client';
+let socket = io();
 
 class App extends React.Component {
 	constructor() {
 		super();
-		let socket = io();
 		this.state = {
-			downloadPercent: null
-		}
+			downloadPercent: null,
+			inputVal: null
+		};
 		var that = this;
-		socket.on('download', function(data) {
+		socket.on('download', (data) => {
 			console.log(data);
-			that.setState({
+			this.setState({
 				downloadPercent: data.completePercent
 			});
-			// socket.emit('my other event', {my: 'data'});
 		});
+
+		this.handleChange = this.handleChange.bind(this);
+		this.submitForm = this.submitForm.bind(this);
 	}
+
+	handleChange(event) {
+		this.setState({inputVal : event.target.value});
+	}
+
+	submitForm() {
+		socket.emit('sendInput', {inputVal: this.state.inputVal});
+	}
+
 	render() {
-		return <div>Hello World {this.state.downloadPercent}</div>;
+		return (
+			<div>
+				Hello World {this.state.downloadPercent}
+				<input 
+					type="text"
+					value={this.state.inputVal}
+					onChange={this.handleChange}
+				/>
+				<button onClick={this.submitForm}>
+					Submit
+				</button>
+			</div>
+		);
 	}
 }
 
